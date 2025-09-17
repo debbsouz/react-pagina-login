@@ -5,13 +5,37 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  // controlar a visibilidade da senha
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const validate = () => {  };
-  const handleLogin = (event) => {  };
+  const validate = () => {
+    const newErrors = {};
+    if (!email) {
+      newErrors.email = 'O campo de e-mail é obrigatório.';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Formato de e-mail inválido.';
+    }
+    if (!password) {
+      newErrors.password = 'O campo de senha é obrigatório.';
+    } else if (password.length < 8) {
+      newErrors.password = 'A senha deve ter no mínimo 8 caracteres.';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
+  const handleLogin = (event) => {
+    event.preventDefault();
+    if (validate()) {
+      console.log('Dados válidos, enviando para o servidor:', { email, password });
+    } else {
+      console.log('Dados inválidos, login bloqueado.');
+    }
+  };
+
+  // alterna o estado de visibilidade
   const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible); 
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -20,7 +44,6 @@ function App() {
         <h1>Login Administrativo</h1>
         <form className="login-form" onSubmit={handleLogin} noValidate>
           <div className="input-group">
-            { }
             <input
               type="email"
               placeholder="Endereço de e-mail"
@@ -30,9 +53,9 @@ function App() {
             />
             {errors.email && <p className="error-message">{errors.email}</p>}
           </div>
-
-          { }
-          <div className="input-group password-group"> { }
+          
+          {/* GRUPO DA SENHA MODIFICADO */}
+          <div className="input-group password-group">
             <input
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder="Senha"
@@ -40,14 +63,11 @@ function App() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            { }
             <button type="button" className="toggle-password" onClick={togglePasswordVisibility}>
-              { }
               {isPasswordVisible ? 'Ocultar' : 'Mostrar'}
             </button>
             {errors.password && <p className="error-message">{errors.password}</p>}
           </div>
-          { }
 
           <button type="submit">Entrar</button>
         </form>

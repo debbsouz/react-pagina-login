@@ -78,3 +78,32 @@
 .input-error:focus {
   outline: 2px solid var(--cor-erro);
 }
+
+
+.password-group {
+  display: flex;
+  align-items: center;
+  border-radius: 6px; 
+  border: 1px solid transparent; 
+}
+
+.password-group input.input-error {
+  border-color: transparent; 
+}
+.password-group.input-error {
+  border-color: var(--cor-erro);
+}
+
+.password-group input {
+  border: none;
+}
+
+.toggle-password {
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+  font-weight: 600;
+}
+
