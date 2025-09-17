@@ -2,12 +2,15 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
+  // --- ESTADOS DO COMPONENTE ---
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  // controlar a visibilidade da senha
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  // --- FUNÇÕES ---
+
+  // Função que valida os campos
   const validate = () => {
     const newErrors = {};
     if (!email) {
@@ -24,20 +27,28 @@ function App() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Função chamada ao enviar o formulário
   const handleLogin = (event) => {
     event.preventDefault();
     if (validate()) {
       console.log('Dados válidos, enviando para o servidor:', { email, password });
+      alert('Login efetuado com sucesso! (Simulação)'); // Feedback de sucesso
     } else {
       console.log('Dados inválidos, login bloqueado.');
     }
   };
 
-  // alterna o estado de visibilidade
+  // Função para alternar a visibilidade da senha
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  // Constante para habilitar/desabilitar o botão de submit em tempo real
+  const isFormValid = 
+    /\S+@\S+\.\S+/.test(email) && 
+    password.length >= 8;
+
+  // --- RENDERIZAÇÃO DO JSX ---
   return (
     <div className="login-page">
       <div className="login-container">
@@ -53,8 +64,6 @@ function App() {
             />
             {errors.email && <p className="error-message">{errors.email}</p>}
           </div>
-          
-          {/* GRUPO DA SENHA MODIFICADO */}
           <div className="input-group password-group">
             <input
               type={isPasswordVisible ? 'text' : 'password'}
@@ -69,7 +78,9 @@ function App() {
             {errors.password && <p className="error-message">{errors.password}</p>}
           </div>
 
-          <button type="submit">Entrar</button>
+          <button type="submit" disabled={!isFormValid}>
+            Entrar
+          </button>
         </form>
       </div>
     </div>
