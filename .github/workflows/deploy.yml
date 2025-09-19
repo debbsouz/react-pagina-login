@@ -1,0 +1,54 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  # Roda sempre que houver um push na branch 'main'
+  push:
+    branches: [ "main" ]
+  # Permite rodar manualmente pela aba Actions também
+  workflow_dispatch:
+
+# Permissões
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Tarefas
+jobs:
+  build-and-deploy:
+    # Computador que ele vai usar
+    runs-on: ubuntu-latest
+    # Passos da tarefa
+    steps:
+      # 1. Copia o código do repositório para a máquina
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Roda o build 
+      - name: Build project
+        run: npm run build
+
+      # 5. Configura o GitHub Pages para o deploy
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 6. Faz o upload da pasta 'dist' para o GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      # 7. Finaliza o deploy
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
