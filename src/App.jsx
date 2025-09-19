@@ -1,54 +1,38 @@
 import { useState } from 'react';
-import './App.css';
+import './App.css'; // Importa o CSS do nosso componente
 
 function App() {
-  // --- ESTADOS DO COMPONENTE ---
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  // --- FUNÇÕES ---
-
-  // Função que valida os campos
   const validate = () => {
     const newErrors = {};
-    if (!email) {
-      newErrors.email = 'O campo de e-mail é obrigatório.';
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Formato de e-mail inválido.';
-    }
-    if (!password) {
-      newErrors.password = 'O campo de senha é obrigatório.';
-    } else if (password.length < 8) {
-      newErrors.password = 'A senha deve ter no mínimo 8 caracteres.';
-    }
+    if (!email) newErrors.email = 'O campo de e-mail é obrigatório.';
+    else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'Formato de e-mail inválido.';
+    if (!password) newErrors.password = 'O campo de senha é obrigatório.';
+    else if (password.length < 8) newErrors.password = 'A senha deve ter no mínimo 8 caracteres.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Função chamada ao enviar o formulário
   const handleLogin = (event) => {
     event.preventDefault();
     if (validate()) {
       console.log('Dados válidos, enviando para o servidor:', { email, password });
-      alert('Login efetuado com sucesso! (Simulação)'); // Feedback de sucesso
+      alert('Login efetuado com sucesso! (Simulação)');
     } else {
       console.log('Dados inválidos, login bloqueado.');
     }
   };
 
-  // Função para alternar a visibilidade da senha
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // Constante para habilitar/desabilitar o botão de submit em tempo real
-  const isFormValid = 
-    /\S+@\S+\.\S+/.test(email) && 
-    password.length >= 8;
+  const isFormValid = /\S+@\S+\.\S+/.test(email) && password.length >= 8;
 
-  // --- RENDERIZAÇÃO DO JSX ---
   return (
     <div className="login-page">
       <div className="login-container">
@@ -77,7 +61,6 @@ function App() {
             </button>
             {errors.password && <p className="error-message">{errors.password}</p>}
           </div>
-
           <button type="submit" disabled={!isFormValid}>
             Entrar
           </button>
